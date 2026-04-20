@@ -1,16 +1,18 @@
 # TypeFlux ⌨️
 
-> A high-performance, visually polished Typing Practice web app heavily inspired by monkeytype.com.
+> A high-performance, visually polished Typing Practice web application designed for a premium, distraction-free experience.
 
 TypeFlux is engineered to deliver a seamless, zero-input-lag typing experience. Built entirely on React + Vite and leveraging **Vanilla CSS** animations, the platform avoids standard controlled-input re-render penalties to maintain buttery-smooth responsiveness.
 
 ## ✨ Core Features
 
 *   **Ultra-Fast Typing Engine**: We bypassed heavy state-driven DOM re-renders. Every keystroke evaluates instantly without layout thrashing.
-*   **Monkeytype-Level Logic**: Word boundaries, backspacing recovery, and overflowing extra characters are mapped 1-to-1 with industry standards.
+*   **Precision Logic**: Professional-grade word boundaries, backspacing recovery, and overflowing extra characters support.
 *   **Smooth Animated Caret**: The typing cursor is decoupled from React renders. It reads raw DOM coordinates once and floats across characters with pure CSS interpolation.
-*   **Real-time Analytics**: See your live WPM speed up as you type. Get detailed final results for Net WPM, Accuracy, and exact Keystroke errors.
-*   **Premium Carbon Aesthetics**: A dark-mode centric, minimalist, distraction-free environment utilizing `JetBrains Mono`.
+*   **Quick Settings Bar**: Effortlessly switch between modes (Time, Words, Facts), durations, and toggles (Punctuation, Numbers, Zen Mode) with a single click.
+*   **History Facts Mode**: Type interesting historical facts and biographical snippets while intentionally hiding performance counters to focus on learning.
+*   **Premium Themes**: Multi-theme support (Carbon, Dracula, Matrix, Nord) with instant switching and glassmorphic UI elements.
+*   **Soundscapes**: Immersive mechanical keyboard audio feedback with custom switch types (Blue, Brown, Red).
 
 ## 🏗️ Technical Architecture
 
@@ -51,10 +53,12 @@ Instead of an `<input value={state}>` acting as a single source of truth that tr
 
 ## ⌨️ Controls
 *   **Type**: Just start typing! (App listens globally)
-*   **Tab + Enter**: Instantly resets your session and shuffles a new deck of words (exactly like Monkeytype).
+*   **Tab + Enter**: Instantly resets your session and shuffles a new deck of words.
+*   **Cmd + K**: Open the Command Palette for advanced configuration and themes.
 
-## 🗺️ Roadmap & Stretch Goals
-- [ ] Sound Design: Audio feedback on correct/incorrect strokes.
-- [ ] Custom Lists: Add multiple word banks (Programming syntax, Quote mode, Numbers logic).
-- [ ] LocalStorage Persistence: Track your WPM progress locally across days.
-- [ ] Themes Engine: Pluggable CSS custom properties that persist globally.
+## 🗺️ Progress
+- [x] **Sound Design**: Audio feedback on correct/incorrect strokes with multiple switch types.
+- [x] **Custom Lists**: Support for Code, React, Git, CSS, and General History Facts.
+- [x] **Themes Engine**: Pluggable CSS custom properties (Carbon, Dracula, Matrix, Nord).
+- [x] **Quick Menu**: Clickable header settings for fast configuration.
+- [x] **Persistence**: All configurations and local history are tracked via LocalStorage.

@@ -1,13 +1,12 @@
 {
   "name": "typeflux",
   "version": "1.0.0",
-  "description": "A high-performance semantic typing application inspired by MonkeyType, built with React, Vite, and Vanilla CSS.",
+  "description": "A high-performance semantic typing application built with React, Vite, and Vanilla CSS.",
   "private": true,
   "author": "Femi Sowemimo",
   "keywords": [
     "react",
     "typing-test",
-    "monkeytype",
     "vite",
     "typescript",
     "vanilla-css",
