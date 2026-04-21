@@ -31,6 +31,12 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ config, updateConf
         >
           facts
         </button>
+        <button 
+          className={`settings-btn ${config.vocabulary === 'interview' ? 'active' : ''}`}
+          onClick={() => updateConfig({ vocabulary: 'interview' })}
+        >
+          prep
+        </button>
       </div>
 
       <div className="settings-divider" />
@@ -48,12 +54,20 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ config, updateConf
         >
           words
         </button>
+        <button 
+          className={`settings-btn ${config.mode === 'infinite' ? 'active' : ''}`}
+          onClick={() => updateConfig({ mode: 'infinite' })}
+        >
+          ∞
+        </button>
       </div>
 
       <div className="settings-divider" />
 
       <div className="settings-group">
-        {config.mode === 'time' ? (
+        {config.mode === 'infinite' ? (
+          <div className="settings-info">∞</div>
+        ) : config.mode === 'time' ? (
           timeOptions.map((t) => (
             <button
               key={t}

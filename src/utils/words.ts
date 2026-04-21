@@ -70,6 +70,17 @@ export const gitWords = [
   "prune", "gc", "archive", "bundle", "fast-forward", "conflict", "HEAD", "detached-head"
 ];
 
+export const interviewQuestions = [
+  "Debouncing is a programming practice used to ensure that time-consuming tasks do not fire so often that they stall the performance of the web page. In other words, it limits the rate at which a function can fire. It is commonly used for search inputs where you only want to trigger the API call after the user has stopped typing for a specific duration.",
+  "Throttling is a technique in which, no matter how many times the user fires the event, the attached function will be executed only once in a given time interval. Unlike debouncing, throttling ensures a constant execution of the function at regular intervals. This is particularly useful for events like window resizing or continuous scrolling where you need consistent updates.",
+  "JSX stands for JavaScript XML. It is a syntax extension for JavaScript used with React to describe what the UI should look like. Although JSX may look like HTML, it is actually compiled into standard JavaScript objects called React elements. Each JSX tag represents a call to React.createElement, which creates the tree structure used by the Virtual DOM.",
+  "Props, short for properties, are read-only inputs passed from a parent component to a child component. They allow components to be dynamic and reusable. In contrast, State is an internal data storage that is local to the component and can be modified by the component itself. When state changes, the component automatically re-renders to reflect the new data.",
+  "The Virtual DOM is a lightweight, in-memory representation of the actual DOM. When a component's state or props change, React creates a new virtual tree and compares it with the previous one using a diffing algorithm. This process is called reconciliation. By identifying only the specific parts that changed, React can update the real DOM efficiently without repainting the entire page.",
+  "React Hooks are functions that let you use state and other React features in functional components without writing a class. For example, useState allows you to add state to a component, while useEffect enables you to handle side effects like data fetching or subscriptions. Hooks must always be called at the top level of your component and never inside loops or conditions.",
+  "CSS Specificity is the set of rules applied by browsers to determine which CSS property values are most relevant to an element and, therefore, will be applied. It is calculated based on the types of selectors used: inline styles have the highest weight, followed by IDs, then classes and attributes, and finally element types. Understanding specificity is crucial for managing complex stylesheets.",
+  "A Closure is the combination of a function bundled together with references to its surrounding state. In JavaScript, closures are created every time a function is created, at function creation time. To use a closure, define a function inside another function and expose it. The inner function will have access to variables in the outer function scope even after the outer function has returned."
+];
+
 export const cssWords = [
   "flex-direction", "justify-content", "align-items", "grid-template-columns", "grid-row-gap",
   "box-sizing", "z-index", "position", "absolute", "relative", "fixed", "sticky", "display",
@@ -81,7 +92,7 @@ export const cssWords = [
 
 export interface GeneratorOptions {
   count?: number;
-  vocabulary?: 'easy' | 'hard' | 'code' | 'paragraphs' | 'react' | 'git' | 'css' | 'history';
+  vocabulary?: 'easy' | 'hard' | 'code' | 'paragraphs' | 'react' | 'git' | 'css' | 'history' | 'interview';
   punctuation?: boolean;
   numbers?: boolean;
 }
@@ -105,6 +116,14 @@ export const generateWords = (options: GeneratorOptions = {}): string[] => {
     let text = "";
     while (text.split(' ').length < count + 5) {
       text += historyFacts[Math.floor(Math.random() * historyFacts.length)] + " ";
+    }
+    return text.trim().split(' ').slice(0, count);
+  }
+
+  if (vocabulary === 'interview') {
+    let text = "";
+    while (text.split(' ').length < count + 5) {
+      text += interviewQuestions[Math.floor(Math.random() * interviewQuestions.length)] + " ";
     }
     return text.trim().split(' ').slice(0, count);
   }

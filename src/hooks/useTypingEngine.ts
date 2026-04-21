@@ -35,7 +35,7 @@ export const useTypingEngine = (config: AppConfig) => {
   }, [totalTyped, correctChars, errors]);
 
   const init = useCallback(() => {
-    const count = config.mode === 'words' ? config.wordCount : 400; 
+    const count = config.mode === 'words' ? config.wordCount : 1000; 
     setWords(generateWords({
       count,
       vocabulary: config.vocabulary,

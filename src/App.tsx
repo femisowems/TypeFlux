@@ -93,11 +93,11 @@ function App() {
       <main>
         {phase !== 'finished' ? (
           <>
-            <div className={`stats-bar ${(phase === 'waiting' || isZenActive || config.vocabulary === 'history') ? 'hidden' : ''}`}>
+            <div className={`stats-bar ${(phase === 'waiting' || isZenActive || config.vocabulary === 'history' || config.vocabulary === 'interview') ? 'hidden' : ''}`}>
                <div className="time">
-                 {config.mode === 'time' ? timeLeft : timeElapsed}
+                 {config.mode === 'infinite' ? timeElapsed : config.mode === 'time' ? timeLeft : timeElapsed}
                </div>
-               {phase === 'running' && config.vocabulary !== 'history' && (
+               {phase === 'running' && config.vocabulary !== 'history' && config.vocabulary !== 'interview' && (
                  <div className="live-stats">
                    {stats.netWpm} wpm
                  </div>
@@ -133,7 +133,7 @@ function App() {
             stats={stats} 
             history={wpmHistory} 
             onRestart={restart} 
-            hideStats={config.vocabulary === 'history'}
+            hideStats={config.vocabulary === 'history' || config.vocabulary === 'interview'}
           />
         )}
       </main>

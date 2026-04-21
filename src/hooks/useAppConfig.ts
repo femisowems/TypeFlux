@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-export type TestMode = 'time' | 'words';
+export type TestMode = 'time' | 'words' | 'infinite';
 export type CaretStyle = 'line' | 'block' | 'underline';
-export type Vocabulary = 'paragraphs' | 'easy' | 'hard' | 'code' | 'react' | 'git' | 'css' | 'history';
+export type Vocabulary = 'paragraphs' | 'easy' | 'hard' | 'code' | 'react' | 'git' | 'css' | 'history' | 'interview';
 export type Theme = 'carbon' | 'dracula' | 'matrix' | 'nord';
 export type SoundType = 'blue' | 'brown' | 'red';
 
