@@ -25,6 +25,9 @@ export const Caret = ({ typedWords, errorTrigger }: CaretProps) => {
           height: charRect.height,
           isVisible: true 
         });
+      } else {
+        // Fallback: if active-char element not found, use default position at start
+        setPosition({ left: 0, top: 0, height: 30, isVisible: true });
       }
     }, 0);
     
@@ -40,6 +43,7 @@ export const Caret = ({ typedWords, errorTrigger }: CaretProps) => {
   useEffect(() => {
     if (errorTrigger > 0) {
       setIsShaking(true);
+      // Shake animation duration: 200ms for visual error feedback
       const timer = setTimeout(() => setIsShaking(false), 200);
       return () => clearTimeout(timer);
     }

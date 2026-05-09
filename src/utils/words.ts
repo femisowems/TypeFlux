@@ -30,7 +30,12 @@ export const historyFacts = [
   "The Renaissance was a fervent period of European cultural, artistic, political and economic rebirth following the Middle Ages.",
   "Nelson Mandela was a South African anti-apartheid revolutionary and political leader who served as the first black president of South Africa from 1994 to 1999.",
   "The French Revolution was a period of far-reaching social and political upheaval in France and its colonies beginning in 1789.",
-  "Gengis Khan founded the Mongol Empire by uniting many of the nomadic tribes of Northeast Asia and went on to conquer much of Eurasia."
+  "Gengis Khan founded the Mongol Empire by uniting many of the nomadic tribes of Northeast Asia and went on to conquer much of Eurasia.",
+  "Cleopatra VII was the last active pharaoh of Ptolemaic Egypt, known for her intelligence, diplomatic acumen, and political relationships with Julius Caesar and Mark Antony.",
+  "The Library of Alexandria was one of the largest and most significant libraries of the ancient world, housing hundreds of thousands of scrolls and manuscripts.",
+  "The Rosetta Stone was an ancient Egyptian granite stele discovered in 1799 that provided the key to deciphering Egyptian hieroglyphics and unlocking ancient texts.",
+  "Leonardo da Vinci was an Italian Renaissance polymath whose diverse interests included art, science, engineering, anatomy, and numerous other disciplines.",
+  "The Gutenberg Printing Press, invented in the 15th century, revolutionized the dissemination of knowledge and is considered one of history's most important inventions."
 ];
 
 export const hardWords = [

@@ -24,7 +24,8 @@ export const useTypingEngine = (config: AppConfig) => {
   const [totalTyped, setTotalTyped] = useState(0);
 
   const [wpmHistory, setWpmHistory] = useState<HistoryPoint[]>([]);
-  const [errorTrigger, setErrorTrigger] = useState(0); 
+  const [errorTrigger, setErrorTrigger] = useState(0);
+  const [endReason, setEndReason] = useState<'sudden-death' | 'normal' | null>(null);
 
   const timerRef = useRef<number | null>(null);
   const { saveResult } = useHistory();
@@ -50,6 +51,7 @@ export const useTypingEngine = (config: AppConfig) => {
     setCorrectChars(0);
     setTotalTyped(0);
     setWpmHistory([]);
+    setEndReason(null);
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
@@ -64,8 +66,9 @@ export const useTypingEngine = (config: AppConfig) => {
 
 
 
-  const endTest = useCallback(() => {
+  const endTest = useCallback((reason?: 'sudden-death') => {
     setPhase('finished');
+    if (reason) setEndReason(reason);
     if (timerRef.current) clearInterval(timerRef.current);
     
     const statsAtEnd = calculateStats(
@@ -137,6 +140,7 @@ export const useTypingEngine = (config: AppConfig) => {
             }
           }
         } else {
+          // Limit extra characters to 10 per word to prevent excessive overflow
           if (currentTypedWord.length < targetWord.length + 10) {
              const keyVal = e.key;
              newTyped[currentWordIndex] = currentTypedWord + keyVal;
@@ -147,9 +151,9 @@ export const useTypingEngine = (config: AppConfig) => {
              } else {
                setErrors((err) => err + 1);
                
-               // Sudden Death Logic
+               // Sudden Death Logic: end test immediately on any error
                if (config.suddenDeath) {
-                 endTest();
+                 endTest('sudden-death');
                  return newTyped;
                }
 
@@ -202,6 +206,7 @@ export const useTypingEngine = (config: AppConfig) => {
     restart: init,
     wpmHistory,
     errorTrigger,
-    ghostCharIndex
+    ghostCharIndex,
+    endReason
   };
 };

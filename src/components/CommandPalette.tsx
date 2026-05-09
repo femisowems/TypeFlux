@@ -17,6 +17,7 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
     // Modes
     { id: 'm-time', label: 'Mode: Time', category: 'Mode', action: () => updateConfig({ mode: 'time' }) },
     { id: 'm-words', label: 'Mode: Words', category: 'Mode', action: () => updateConfig({ mode: 'words' }) },
+    { id: 'm-infinite', label: 'Mode: Infinite', category: 'Mode', action: () => updateConfig({ mode: 'infinite' }) },
     
     // Time Durations
     { id: 't-15', label: 'Time: 15s', category: 'Duration', action: () => updateConfig({ mode: 'time', duration: 15 }) },
@@ -31,7 +32,7 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
     { id: 'w-100', label: 'Words: 100', category: 'Duration', action: () => updateConfig({ mode: 'words', wordCount: 100 }) },
     
     // Vocabulary
-    ...(['paragraphs', 'easy', 'hard', 'code', 'react', 'git', 'css'] as Vocabulary[]).map(v => ({
+    ...(['paragraphs', 'easy', 'hard', 'code', 'react', 'git', 'css', 'history', 'interview'] as Vocabulary[]).map(v => ({
       id: `voc-${v}`, label: `Vocabulary: ${v.charAt(0).toUpperCase() + v.slice(1)}`, category: 'Difficulty', action: () => updateConfig({ vocabulary: v })
     })),
     

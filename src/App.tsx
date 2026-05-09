@@ -13,7 +13,7 @@ function App() {
   const { config, setConfig } = useAppConfig();
   const { 
     phase, words, typedWords, timeLeft, timeElapsed, stats, 
-    restart, wpmHistory, errorTrigger, ghostCharIndex 
+    restart, wpmHistory, errorTrigger, ghostCharIndex, endReason
   } = useTypingEngine(config);
   
   const { playClick } = useSoundEngine(config);
@@ -134,6 +134,7 @@ function App() {
             history={wpmHistory} 
             onRestart={restart} 
             hideStats={config.vocabulary === 'history' || config.vocabulary === 'interview'}
+            endReason={endReason}
           />
         )}
       </main>

@@ -8,9 +8,10 @@ interface ResultsDisplayProps {
   history: HistoryPoint[];
   onRestart: () => void;
   hideStats?: boolean;
+  endReason?: 'sudden-death' | 'normal' | null;
 }
 
-export const ResultsDisplay = ({ stats, history, onRestart, hideStats }: ResultsDisplayProps) => {
+export const ResultsDisplay = ({ stats, history, onRestart, hideStats, endReason }: ResultsDisplayProps) => {
   const { history: testHistory, clearHistory } = useHistory();
 
   if (hideStats) {
@@ -56,6 +57,12 @@ export const ResultsDisplay = ({ stats, history, onRestart, hideStats }: Results
           <WpmChart data={history} />
         </div>
       </div>
+      
+      {endReason === 'sudden-death' && (
+        <div style={{ textAlign: 'center', color: 'var(--error-color)', fontSize: '0.95rem', marginBottom: '1rem', fontWeight: '500' }}>
+          ⚡ Sudden Death: Test ended on first error
+        </div>
+      )}
       
       <div className="results-stats horizontal">
         <div className="stat-group">

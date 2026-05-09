@@ -29,7 +29,7 @@ export const useHistory = () => {
     };
 
     setHistory(prev => {
-      const next = [entry, ...prev].slice(0, 25); // Keep last 25
+      const next = [entry, ...prev].slice(0, 50); // Keep last 50 for better history tracking
       localStorage.setItem('typeflux-history', JSON.stringify(next));
       return next;
     });

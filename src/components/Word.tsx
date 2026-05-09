@@ -55,6 +55,7 @@ export const Word = memo(({ targetWord, typedWord, isActive, wordIndex, visibili
         );
       })}
       
+      {/* Render empty active-char span when cursor position reaches end of overflow chars for continuous caret display */}
       {isActive && ((typedWord?.length || 0) >= targetWord.length + extraChars.length) && (
          <span id="active-char" className="char-wrapper"></span>
       )}
