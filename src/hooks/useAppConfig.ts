@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export type TestMode = 'time' | 'words' | 'infinite';
 export type CaretStyle = 'line' | 'block' | 'underline';
-export type Vocabulary = 'paragraphs' | 'easy' | 'hard' | 'code' | 'react' | 'git' | 'css' | 'history' | 'interview';
+export type Vocabulary = 'paragraphs' | 'easy' | 'hard' | 'code' | 'react' | 'git' | 'css' | 'history' | 'interview' | 'bible';
 export type Theme = 'carbon' | 'dracula' | 'matrix' | 'nord';
 export type SoundType = 'blue' | 'brown' | 'red';
 
@@ -60,7 +60,14 @@ export const useAppConfig = () => {
   const setConfig = (updates: Partial<AppConfig>) => {
     setConfigState(prev => {
       const next = { ...prev, ...updates };
-      localStorage.setItem('typeflux-config', JSON.stringify(next));
+      try {
+        localStorage.setItem('typeflux-config', JSON.stringify(next));
+      } catch (err) {
+        // Handle quota exceeded or other localStorage errors gracefully
+        if (err instanceof Error) {
+          console.warn('Failed to save config to localStorage:', err.message);
+        }
+      }
       return next;
     });
   };

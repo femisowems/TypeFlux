@@ -13,6 +13,13 @@ interface ResultsDisplayProps {
 
 export const ResultsDisplay = ({ stats, history, onRestart, hideStats, endReason }: ResultsDisplayProps) => {
   const { history: testHistory, clearHistory } = useHistory();
+  const peakNetWpm = history.length > 0 ? Math.max(stats.netWpm, ...history.map((point) => point.wpm)) : stats.netWpm;
+  const peakRawWpm = history.length > 0 ? Math.max(stats.rawWpm, ...history.map((point) => point.raw)) : stats.rawWpm;
+  const averageNetWpm = history.length > 0 ? Math.round(history.reduce((sum, point) => sum + point.wpm, 0) / history.length) : stats.netWpm;
+  const averageRawWpm = history.length > 0 ? Math.round(history.reduce((sum, point) => sum + point.raw, 0) / history.length) : stats.rawWpm;
+  const sessionSeconds = history.length > 0 ? history[history.length - 1].second : 0;
+  const charactersPerMinute = sessionSeconds > 0 ? Math.round((stats.totalTyped / sessionSeconds) * 60) : 0;
+  const correctChars = stats.totalTyped - stats.errors;
 
   if (hideStats) {
     return (
@@ -63,6 +70,57 @@ export const ResultsDisplay = ({ stats, history, onRestart, hideStats, endReason
           ⚡ Sudden Death: Test ended on first error
         </div>
       )}
+
+      <div className="results-metrics-grid">
+        <div className="metric-card">
+          <span className="metric-label">net wpm</span>
+          <span className="metric-value">{stats.netWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">raw wpm</span>
+          <span className="metric-value">{stats.rawWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">accuracy</span>
+          <span className="metric-value">{stats.accuracy}%</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">errors</span>
+          <span className="metric-value">{stats.errors}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">typed</span>
+          <span className="metric-value">{stats.totalTyped}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">correct</span>
+          <span className="metric-value">{correctChars}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">peak net</span>
+          <span className="metric-value">{peakNetWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">peak raw</span>
+          <span className="metric-value">{peakRawWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">avg net</span>
+          <span className="metric-value">{averageNetWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">avg raw</span>
+          <span className="metric-value">{averageRawWpm}</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">time</span>
+          <span className="metric-value">{sessionSeconds}s</span>
+        </div>
+        <div className="metric-card">
+          <span className="metric-label">cpm</span>
+          <span className="metric-value">{charactersPerMinute}</span>
+        </div>
+      </div>
       
       <div className="results-stats horizontal">
         <div className="stat-group">

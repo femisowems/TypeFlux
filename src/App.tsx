@@ -20,6 +20,14 @@ function App() {
   const restartButtonRef = useRef<HTMLButtonElement>(null);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
+  const completedWords = Math.max(0, typedWords.length - 1);
+  const totalGoal = config.mode === 'time' ? `${config.duration}s` : config.mode === 'words' ? `${config.wordCount} words` : '∞';
+  const progressText = config.mode === 'time'
+    ? `${timeElapsed}s / ${config.duration}s`
+    : config.mode === 'words'
+      ? `${completedWords} / ${config.wordCount} words`
+      : `${timeElapsed}s / ∞`;
+
   useEffect(() => {
     const themeStyles = themes[config.theme];
     if (themeStyles) {
@@ -76,7 +84,10 @@ function App() {
         config={config}
         updateConfig={(updates) => {
           setConfig(updates);
-          restart();
+          // In infinite mode while running, don't restart - settings apply on next test
+          if (!(phase === 'running' && config.mode === 'infinite')) {
+            restart();
+          }
         }}
       />
 
@@ -86,7 +97,10 @@ function App() {
         config={config}
         updateConfig={(updates) => {
           setConfig(updates);
-          restart();
+          // In infinite mode while running, don't restart - settings apply on next test
+          if (!(phase === 'running' && config.mode === 'infinite')) {
+            restart();
+          }
         }}
       />
 
@@ -94,13 +108,52 @@ function App() {
         {phase !== 'finished' ? (
           <>
             <div className={`stats-bar ${(phase === 'waiting' || isZenActive || config.vocabulary === 'history' || config.vocabulary === 'interview') ? 'hidden' : ''}`}>
-               <div className="time">
-                 {config.mode === 'infinite' ? timeElapsed : config.mode === 'time' ? timeLeft : timeElapsed}
+               <div className="stat-pill">
+                 <span className="stat-pill-label">time</span>
+                 <span className="stat-pill-value">
+                   {config.mode === 'infinite' ? timeElapsed : config.mode === 'time' ? timeLeft : timeElapsed}
+                 </span>
                </div>
-               {phase === 'running' && config.vocabulary !== 'history' && config.vocabulary !== 'interview' && (
-                 <div className="live-stats">
-                   {stats.netWpm} wpm
-                 </div>
+               <div className="stat-pill">
+                 <span className="stat-pill-label">goal</span>
+                 <span className="stat-pill-value">{totalGoal}</span>
+               </div>
+               {phase === 'running' && (
+                 <>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">wpm</span>
+                     <span className="stat-pill-value">{stats.netWpm}</span>
+                   </div>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">raw</span>
+                     <span className="stat-pill-value">{stats.rawWpm}</span>
+                   </div>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">acc</span>
+                     <span className="stat-pill-value">{stats.accuracy}%</span>
+                   </div>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">chars</span>
+                     <span className="stat-pill-value">{stats.totalTyped}</span>
+                   </div>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">errors</span>
+                     <span className="stat-pill-value">{stats.errors}</span>
+                   </div>
+                   <div className="stat-pill">
+                     <span className="stat-pill-label">progress</span>
+                     <span className="stat-pill-value">{progressText}</span>
+                   </div>
+                 </>
+               )}
+               {phase === 'running' && config.mode === 'infinite' && (
+                 <button 
+                   className="stop-test-btn"
+                   onClick={() => restart()}
+                   aria-label="Stop infinite test"
+                 >
+                   stop
+                 </button>
                )}
             </div>
             

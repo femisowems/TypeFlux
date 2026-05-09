@@ -32,7 +32,7 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
     { id: 'w-100', label: 'Words: 100', category: 'Duration', action: () => updateConfig({ mode: 'words', wordCount: 100 }) },
     
     // Vocabulary
-    ...(['paragraphs', 'easy', 'hard', 'code', 'react', 'git', 'css', 'history', 'interview'] as Vocabulary[]).map(v => ({
+    ...(['paragraphs', 'easy', 'hard', 'code', 'react', 'git', 'css', 'history', 'interview', 'bible'] as Vocabulary[]).map(v => ({
       id: `voc-${v}`, label: `Vocabulary: ${v.charAt(0).toUpperCase() + v.slice(1)}`, category: 'Difficulty', action: () => updateConfig({ vocabulary: v })
     })),
     
@@ -83,6 +83,37 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Tab focus trap: keep focus inside modal
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        if (e.shiftKey) {
+          // Shift+Tab: move to previous focusable element
+          if (document.activeElement === inputRef.current) {
+            // Move to last command
+            const commands = document.querySelectorAll('.command-item');
+            if (commands.length > 0) {
+              (commands[commands.length - 1] as HTMLElement).focus();
+            }
+          } else {
+            // Move to input
+            inputRef.current?.focus();
+          }
+        } else {
+          // Tab: move to next focusable element
+          if (document.activeElement === inputRef.current) {
+            // Move to first command
+            const firstCommand = document.querySelector('.command-item');
+            if (firstCommand) {
+              (firstCommand as HTMLElement).focus();
+            }
+          } else {
+            // Move back to input
+            inputRef.current?.focus();
+          }
+        }
+        return;
+      }
+
       if (filteredCommands.length === 0) return;
 
       if (e.key === 'ArrowDown') {
@@ -113,7 +144,7 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
 
   return (
     <div className="command-palette-backdrop" onClick={onClose}>
-      <div className="command-palette-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="command-palette-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Command palette">
         <div className="command-header">
            <input 
              ref={inputRef}
@@ -134,6 +165,8 @@ export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: Comman
                 onClose();
               }}
               onMouseEnter={() => setSelectedIndex(idx)}
+              role="button"
+              tabIndex={0}
             >
                <div className="command-text">
                  <span className="command-cat">{cmd.category}</span>

@@ -24,6 +24,9 @@ export const useSoundEngine = (config: AppConfig) => {
       ctx.resume();
     }
 
+    // Create new oscillator per keystroke (not pooled): acceptable for performance
+    // Each sound plays for 50-100ms then stops, so memory overhead is minimal.
+    // Creating oscillators is fast; Web Audio handles cleanup efficiently.
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 

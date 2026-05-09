@@ -109,7 +109,8 @@ export const useTypingEngine = (config: AppConfig) => {
               activeStatsRef.current.errors,
               nextTime
             );
-            setWpmHistory(h => [...h, { second: nextTime, wpm: liveStats.netWpm, raw: liveStats.rawWpm }]);
+            // Cap WPM history at 300 points (~5 minutes) to prevent unbounded memory growth in infinite mode
+            setWpmHistory(h => h.length >= 300 ? h : [...h, { second: nextTime, wpm: liveStats.netWpm, raw: liveStats.rawWpm }]);
 
             if (config.mode === 'time' && nextTime >= config.duration) {
               endTest();
@@ -146,6 +147,9 @@ export const useTypingEngine = (config: AppConfig) => {
              newTyped[currentWordIndex] = currentTypedWord + keyVal;
              setTotalTyped((t) => t + 1);
              
+             // Character-by-character comparison correctly handles punctuation wrapping:
+             // When punctuation is enabled, words like 'hello' become '(hello)' or '"hello"'.
+             // The comparison includes these wrapper characters, so caret position aligns perfectly.
              if (targetWord[currentTypedWord.length] === keyVal) {
                setCorrectChars((c) => c + 1);
              } else {

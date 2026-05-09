@@ -86,6 +86,17 @@ export const interviewQuestions = [
   "A Closure is the combination of a function bundled together with references to its surrounding state. In JavaScript, closures are created every time a function is created, at function creation time. To use a closure, define a function inside another function and expose it. The inner function will have access to variables in the outer function scope even after the outer function has returned."
 ];
 
+export const biblePassages = [
+  "In the beginning God created the heaven and the earth. Genesis 1:1",
+  "The Lord is my shepherd; I shall not want. Psalm 23:1",
+  "Trust in the Lord with all thine heart; and lean not unto thine own understanding. Proverbs 3:5",
+  "I can do all things through Christ which strengtheneth me. Philippians 4:13",
+  "For God so loved the world, that he gave his only begotten Son. John 3:16",
+  "Be strong and of a good courage; be not afraid. Joshua 1:9",
+  "And we know that all things work together for good to them that love God. Romans 8:28",
+  "Let all that you do be done in love. 1 Corinthians 16:14"
+];
+
 export const cssWords = [
   "flex-direction", "justify-content", "align-items", "grid-template-columns", "grid-row-gap",
   "box-sizing", "z-index", "position", "absolute", "relative", "fixed", "sticky", "display",
@@ -97,7 +108,7 @@ export const cssWords = [
 
 export interface GeneratorOptions {
   count?: number;
-  vocabulary?: 'easy' | 'hard' | 'code' | 'paragraphs' | 'react' | 'git' | 'css' | 'history' | 'interview';
+  vocabulary?: 'easy' | 'hard' | 'code' | 'paragraphs' | 'react' | 'git' | 'css' | 'history' | 'interview' | 'bible';
   punctuation?: boolean;
   numbers?: boolean;
 }
@@ -129,6 +140,14 @@ export const generateWords = (options: GeneratorOptions = {}): string[] => {
     let text = "";
     while (text.split(' ').length < count + 5) {
       text += interviewQuestions[Math.floor(Math.random() * interviewQuestions.length)] + " ";
+    }
+    return text.trim().split(' ').slice(0, count);
+  }
+
+  if (vocabulary === 'bible') {
+    let text = "";
+    while (text.split(' ').length < count + 5) {
+      text += biblePassages[Math.floor(Math.random() * biblePassages.length)] + " ";
     }
     return text.trim().split(' ').slice(0, count);
   }

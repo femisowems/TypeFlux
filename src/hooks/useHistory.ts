@@ -30,14 +30,27 @@ export const useHistory = () => {
 
     setHistory(prev => {
       const next = [entry, ...prev].slice(0, 50); // Keep last 50 for better history tracking
-      localStorage.setItem('typeflux-history', JSON.stringify(next));
+      try {
+        localStorage.setItem('typeflux-history', JSON.stringify(next));
+      } catch (err) {
+        // Handle quota exceeded or other localStorage errors gracefully
+        if (err instanceof Error) {
+          console.warn('Failed to save test result to history:', err.message);
+        }
+      }
       return next;
     });
   }, []);
 
   const clearHistory = useCallback(() => {
     setHistory([]);
-    localStorage.removeItem('typeflux-history');
+    try {
+      localStorage.removeItem('typeflux-history');
+    } catch (err) {
+      if (err instanceof Error) {
+        console.warn('Failed to clear history from localStorage:', err.message);
+      }
+    }
   }, []);
 
   return { history, saveResult, clearHistory };
