@@ -35,6 +35,32 @@ header {
   gap: 0.5rem;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--main-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.profile-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+}
+
 .typing-area {
   position: relative;
   width: 100%;
@@ -196,6 +222,15 @@ header {
 }
 
 @media (max-width: 768px) {
+  .nav {
+    gap: 0.45rem;
+  }
+
+  .profile-chip {
+    font-size: 0.7rem;
+    padding: 0.32rem 0.5rem;
+  }
+
   .stats-bar {
     font-size: 1rem;
   }
@@ -542,6 +577,132 @@ header {
 @keyframes modalIn {
   0% { opacity: 0; transform: scale(0.95); }
   100% { opacity: 1; transform: scale(1); }
+}
+
+/* Profile Manager */
+.profile-manager-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(5px);
+  z-index: 110;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12vh;
+}
+
+.profile-manager-modal {
+  width: min(540px, calc(100vw - 2rem));
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--bg-color) 90%, black 10%);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+  padding: 1rem;
+  animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-manager-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.85rem;
+}
+
+.profile-manager-header-row h2 {
+  margin: 0;
+  color: var(--main-color);
+  font-size: 1.15rem;
+}
+
+.profile-manager-hint {
+  color: var(--sub-color);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profile-manager-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.profile-action-btn {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.profile-action-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.profile-action-btn.danger {
+  color: var(--error-color);
+  border-color: color-mix(in srgb, var(--error-color) 60%, transparent 40%);
+}
+
+.profile-manager-input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.75rem;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.profile-manager-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.profile-row {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: left;
+}
+
+.profile-row:hover,
+.profile-row.selected {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.profile-row.active {
+  border-color: color-mix(in srgb, var(--main-color) 55%, transparent 45%);
+}
+
+.profile-active-tag {
+  color: var(--main-color);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profile-manager-empty {
+  color: var(--sub-color);
+  text-align: center;
+  padding: 1rem;
 }
 
 /* Quick Settings Bar */

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type TestMode = 'time' | 'words' | 'infinite';
 export type CaretStyle = 'line' | 'block' | 'underline';
@@ -46,22 +46,32 @@ export const defaultConfig: AppConfig = {
   hideStats: false
 };
 
-export const useAppConfig = () => {
+const profileConfigKey = (profileId: string) => `typeflux-profile-${profileId}-config`;
+
+const readConfig = (profileId: string): AppConfig => {
+  if (typeof window === 'undefined') return defaultConfig;
+  const saved = localStorage.getItem(profileConfigKey(profileId));
+  if (saved) {
+    try { return { ...defaultConfig, ...JSON.parse(saved) }; }
+    catch { return defaultConfig; }
+  }
+  return defaultConfig;
+};
+
+export const useAppConfig = (profileId: string) => {
   const [config, setConfigState] = useState<AppConfig>(() => {
-    if (typeof window === 'undefined') return defaultConfig;
-    const saved = localStorage.getItem('typeflux-config');
-    if (saved) {
-      try { return { ...defaultConfig, ...JSON.parse(saved) }; }
-      catch { return defaultConfig; }
-    }
-    return defaultConfig;
+    return readConfig(profileId);
   });
+
+  useEffect(() => {
+    setConfigState(readConfig(profileId));
+  }, [profileId]);
 
   const setConfig = (updates: Partial<AppConfig>) => {
     setConfigState(prev => {
       const next = { ...prev, ...updates };
       try {
-        localStorage.setItem('typeflux-config', JSON.stringify(next));
+        localStorage.setItem(profileConfigKey(profileId), JSON.stringify(next));
       } catch (err) {
         // Handle quota exceeded or other localStorage errors gracefully
         if (err instanceof Error) {

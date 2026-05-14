@@ -12,7 +12,7 @@ export interface HistoryPoint {
   raw: number;
 }
 
-export const useTypingEngine = (config: AppConfig) => {
+export const useTypingEngine = (config: AppConfig, profileId: string) => {
   const [phase, setPhase] = useState<Phase>('waiting');
   const [words, setWords] = useState<string[]>([]);
   const [typedWords, setTypedWords] = useState<string[]>(['']);
@@ -28,12 +28,17 @@ export const useTypingEngine = (config: AppConfig) => {
   const [endReason, setEndReason] = useState<'sudden-death' | 'normal' | null>(null);
 
   const timerRef = useRef<number | null>(null);
-  const { saveResult } = useHistory();
+  const { saveResult } = useHistory(profileId);
+  const timeElapsedRef = useRef(timeElapsed);
 
   const activeStatsRef = useRef({ totalTyped, correctChars, errors });
   useEffect(() => {
     activeStatsRef.current = { totalTyped, correctChars, errors };
   }, [totalTyped, correctChars, errors]);
+
+  useEffect(() => {
+    timeElapsedRef.current = timeElapsed;
+  }, [timeElapsed]);
 
   const init = useCallback(() => {
     const count = config.mode === 'words' ? config.wordCount : 1000; 
@@ -75,7 +80,7 @@ export const useTypingEngine = (config: AppConfig) => {
       activeStatsRef.current.totalTyped,
       activeStatsRef.current.correctChars,
       activeStatsRef.current.errors,
-      timeElapsed
+      timeElapsedRef.current
     );
 
     // Save to history

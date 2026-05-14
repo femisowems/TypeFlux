@@ -8,7 +8,12 @@ interface CommandPaletteProps {
   updateConfig: (c: Partial<AppConfig>) => void;
 }
 
-export const CommandPalette = ({ isOpen, onClose, config, updateConfig }: CommandPaletteProps) => {
+export const CommandPalette = ({
+  isOpen,
+  onClose,
+  config,
+  updateConfig,
+}: CommandPaletteProps) => {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);

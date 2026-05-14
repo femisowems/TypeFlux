@@ -5,9 +5,11 @@ import { QuickSettings } from './QuickSettings';
 interface HeaderProps {
   config: AppConfig;
   updateConfig: (updates: Partial<AppConfig>) => void;
+  activeProfileName: string;
+  onOpenProfileManager: () => void;
 }
 
-export const Header = ({ config, updateConfig }: HeaderProps) => {
+export const Header = ({ config, updateConfig, activeProfileName, onOpenProfileManager }: HeaderProps) => {
   return (
     <header>
       <div className="logo" onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
@@ -20,6 +22,9 @@ export const Header = ({ config, updateConfig }: HeaderProps) => {
         TypeFlux
       </div>
       <div className="nav">
+        <button className="profile-chip" onClick={onOpenProfileManager} aria-label="Open profile manager">
+          {activeProfileName}
+        </button>
         <QuickSettings config={config} updateConfig={updateConfig} />
       </div>
     </header>

@@ -3,22 +3,34 @@ import './App.css';
 import { useTypingEngine } from './hooks/useTypingEngine';
 import { useAppConfig } from './hooks/useAppConfig';
 import { useSoundEngine } from './hooks/useSoundEngine';
+import { useProfiles } from './hooks/useProfiles';
 import { themes } from './utils/themes';
 import { Header } from './components/Header';
 import { TypingArea } from './components/TypingArea';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { CommandPalette } from './components/CommandPalette';
+import { ProfileManager } from './components/ProfileManager';
 
 function App() {
-  const { config, setConfig } = useAppConfig();
+  const {
+    profiles,
+    activeProfileId,
+    activeProfile,
+    setActiveProfile,
+    createProfile,
+    renameProfile,
+    deleteProfile,
+  } = useProfiles();
+  const { config, setConfig } = useAppConfig(activeProfileId);
   const { 
     phase, words, typedWords, timeLeft, timeElapsed, stats, 
     restart, wpmHistory, errorTrigger, ghostCharIndex, endReason
-  } = useTypingEngine(config);
+  } = useTypingEngine(config, activeProfileId);
   
   const { playClick } = useSoundEngine(config);
   const restartButtonRef = useRef<HTMLButtonElement>(null);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [isProfileManagerOpen, setIsProfileManagerOpen] = useState(false);
 
   const completedWords = Math.max(0, typedWords.length - 1);
   const totalGoal = config.mode === 'time' ? `${config.duration}s` : config.mode === 'words' ? `${config.wordCount} words` : '∞';
@@ -27,6 +39,10 @@ function App() {
     : config.mode === 'words'
       ? `${completedWords} / ${config.wordCount} words`
       : `${timeElapsed}s / ∞`;
+
+  useEffect(() => {
+    restart();
+  }, [activeProfileId, restart]);
 
   useEffect(() => {
     const themeStyles = themes[config.theme];
@@ -47,6 +63,13 @@ function App() {
          return;
       }
 
+      // Profile Manager (Cmd/Ctrl+Shift+P)
+      if (e.key.toLowerCase() === 'p' && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+        e.preventDefault();
+        setIsProfileManagerOpen(true);
+        return;
+      }
+
 
 
       // Tab key logic
@@ -64,7 +87,7 @@ function App() {
       }
 
       // Play click sound for typing characters (except command keys)
-      if (phase !== 'finished' && !isPaletteOpen && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      if (phase !== 'finished' && !isPaletteOpen && !isProfileManagerOpen && !e.metaKey && !e.ctrlKey && !e.altKey) {
         if (e.key.length === 1 || e.key === 'Backspace' || e.key === ' ') {
           playClick();
         }
@@ -72,7 +95,7 @@ function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [restart, phase, isPaletteOpen, playClick]);
+  }, [restart, phase, isPaletteOpen, isProfileManagerOpen, playClick]);
 
   const isZenActive = config.zenMode && phase === 'running';
 
@@ -91,10 +114,23 @@ function App() {
         }}
       />
 
+      <ProfileManager
+        isOpen={isProfileManagerOpen}
+        onClose={() => setIsProfileManagerOpen(false)}
+        profiles={profiles}
+        activeProfileId={activeProfileId}
+        onSwitchProfile={setActiveProfile}
+        onCreateProfile={createProfile}
+        onRenameProfile={renameProfile}
+        onDeleteProfile={deleteProfile}
+      />
+
 
       
       <Header 
         config={config}
+        activeProfileName={activeProfile?.name ?? 'Main'}
+        onOpenProfileManager={() => setIsProfileManagerOpen(true)}
         updateConfig={(updates) => {
           setConfig(updates);
           // In infinite mode while running, don't restart - settings apply on next test
@@ -188,6 +224,7 @@ function App() {
             onRestart={restart} 
             hideStats={config.vocabulary === 'history' || config.vocabulary === 'interview'}
             endReason={endReason}
+            profileId={activeProfileId}
           />
         )}
       </main>
@@ -197,6 +234,8 @@ function App() {
           <span>tab</span> + <span>enter</span> to restart
           <span className="sep"> • </span>
           <span>cmd</span> + <span>k</span> for settings
+          <span className="sep"> • </span>
+          <span>cmd</span> + <span>shift</span> + <span>p</span> for profiles
         </div>
       </div>
     </div>

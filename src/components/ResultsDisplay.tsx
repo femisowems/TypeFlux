@@ -9,10 +9,11 @@ interface ResultsDisplayProps {
   onRestart: () => void;
   hideStats?: boolean;
   endReason?: 'sudden-death' | 'normal' | null;
+  profileId: string;
 }
 
-export const ResultsDisplay = ({ stats, history, onRestart, hideStats, endReason }: ResultsDisplayProps) => {
-  const { history: testHistory, clearHistory } = useHistory();
+export const ResultsDisplay = ({ stats, history, onRestart, hideStats, endReason, profileId }: ResultsDisplayProps) => {
+  const { history: testHistory, clearHistory } = useHistory(profileId);
   const peakNetWpm = history.length > 0 ? Math.max(stats.netWpm, ...history.map((point) => point.wpm)) : stats.netWpm;
   const peakRawWpm = history.length > 0 ? Math.max(stats.rawWpm, ...history.map((point) => point.raw)) : stats.rawWpm;
   const averageNetWpm = history.length > 0 ? Math.round(history.reduce((sum, point) => sum + point.wpm, 0) / history.length) : stats.netWpm;
